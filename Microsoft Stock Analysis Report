@@ -1,0 +1,219 @@
+<html>
+<head>
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.2.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+	$(document).ready(function() {
+    $.ajax({
+        url: "https://www.quandl.com/api/v3/datasets/EOD/MSFT.json?api_key=D-6xdyyNLLAo-yuzNvn3"
+    }).then(function (data) {
+    	//var d=JSON.parse(data);
+    	console.log(data);
+    	var barr=[];
+    	v0 =[];
+		v1 =[];
+		v2 =[];
+		v3 =[];
+		v4 =[];
+		v5 =[];
+		v6 =[];
+		var datavolbig=[];
+    	for(var i=0;i<50;i++)
+    	{
+    		var smarr=[];
+			var datavol=[];
+    		var t0=data.dataset.data[i][0];
+    		v0.push(t0);
+			var t1=data.dataset.data[i][1];
+    		v1.push(t1);
+			var t2=data.dataset.data[i][2];
+    		v2.push(t2);
+			var t3=data.dataset.data[i][3];
+    		v3.push(t3);
+			var t4=data.dataset.data[i][4];
+    		v4.push(t4);
+			var t5=data.dataset.data[i][5];
+    		v5.push(t5);
+			var t6=data.dataset.data[i][6];
+    		v6.push(t6);
+			
+			var datavol =[];
+			datavol.push(t0.toString());
+			datavol.push(t5);
+			datavolbig.push(datavol);
+			console.log("jyutyt"+t5);
+    		smarr.push(t0.toString());
+    		smarr.push(t1);
+    		console.log("small array: "+smarr);
+    		//barr.push(smarr.toString());
+    		//barr.push.apply(barr,smarr);
+    		barr.push(smarr);
+    		console.log("big array"+barr);
+    		//smarr=[];
+    		//console.log(data.dataset.data[i][0]);
+    	}
+		console.log("Open : ");
+    	console.log(v1);
+    	console.log("High : ");
+		console.log(v2);
+		
+      // console.log(d.dataset);
+        var json_obj = data;//parse JSO
+        console.log(" json_obj -> " + json_obj);
+        $('#container1').highcharts({
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 45
+            }
+        },
+        title: {
+            text: 'Volume of the stocks sold'
+        },
+        subtitle: {
+            text: '3D donut in Highcharts'
+        },
+        plotOptions: {
+            pie: {
+                innerSize: 100,
+                depth: 45
+            }
+        },
+        series: [{
+            name: 'Volume',
+            data: datavolbig
+        }]
+    });
+   
+      $('#container2').highcharts({
+            chart: {
+                zoomType: 'x'
+            },
+            title: {
+                text: 'Open values'
+            },
+            subtitle: {
+                text: document.ontouchstart === undefined ?
+                        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+            },
+            xAxis: {
+                //type: 'date'
+                categories: v0,
+				reversed: true
+				
+            },
+            yAxis: {
+                title: {
+                    text: 'Stock Price'
+                }
+            },
+            legend: {
+                enabled: true
+				
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+
+            series: [{
+                type: 'area',
+                name: 'Open value',
+                data: barr            }]
+        });
+
+
+ $('#container3').highcharts({
+        chart: {
+            type: 'area'
+        },
+        title: {
+            text: 'Low Vs change in Stock value of the company'
+        },
+        xAxis: {
+            categories: v0,
+            tickmarkPlacement: 'on',
+			reversed: true,
+            title: {
+                enabled: false
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Stock Price'
+            },
+            labels: {
+                //formatter: function () {
+                //    return this.value / 1000;
+                //}
+            }
+        },
+        tooltip: {
+            shared: true,
+            valueSuffix: ' in USD'
+        },
+        plotOptions: {
+            area: {
+                stacking: 'normal',
+                lineColor: '#666666',
+                lineWidth: 1,
+                marker: {
+                    lineWidth: 1,
+                    lineColor: '#666666'
+                }
+            }
+        },
+        series: [{
+              name: 'Low',
+            data: v3
+        },
+        {
+          	
+			name: 'High ',
+            data: v2
+        }
+        ]
+    });
+
+$('container4')
+
+});
+}); 
+</script>
+
+
+
+</script>
+
+<div>   <h2> Microsoft Stock Dashboard </h2> </div>
+<div id="container1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="container3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script></body>
+</html>
