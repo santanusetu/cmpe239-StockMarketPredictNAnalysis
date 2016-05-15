@@ -21,7 +21,7 @@ public class TweetManager {
 
 			// new
 			Query query = new Query(topic + " -filter:retweets -filter:links -filter:replies -filter:images");
-			query.setCount(20);
+			query.setCount(5);
 			query.setLocale("en");
 			query.setLang("en");
 
